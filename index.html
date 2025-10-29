@@ -5,13 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Adventure Story Card</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap');
+        
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
         
         body {
             margin: 0;
             padding: 40px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
-            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0f;
+            background-image: 
+                radial-gradient(ellipse at 20% 20%, rgba(139, 110, 74, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.06) 0%, transparent 50%);
+            font-family: 'Libre Baskerville', serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,18 +29,37 @@
         .card-container {
             perspective: 2000px;
             max-width: 1200px;
+            filter: drop-shadow(0 40px 100px rgba(0,0,0,0.7));
         }
         
         .card {
             width: 100%;
-            background: #faf8f5;
-            border-radius: 2px;
-            box-shadow: 0 30px 90px rgba(0,0,0,0.5), 0 0 1px rgba(0,0,0,0.1) inset;
+            background: #fdfbf7;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(212, 175, 55, 0.015) 1px,
+                    rgba(212, 175, 55, 0.015) 2px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(212, 175, 55, 0.015) 1px,
+                    rgba(212, 175, 55, 0.015) 2px
+                );
+            border-radius: 0;
+            box-shadow: 
+                0 0 0 1px rgba(139, 110, 74, 0.15),
+                0 2px 4px rgba(0,0,0,0.05) inset,
+                0 50px 100px rgba(0,0,0,0.4),
+                0 0 80px rgba(212, 175, 55, 0.1);
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             overflow: hidden;
             position: relative;
-            border: 1px solid rgba(139, 110, 74, 0.2);
         }
         
         .card::before {
@@ -41,34 +68,48 @@
             top: 0;
             left: 0;
             right: 0;
+            height: 1px;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(212, 175, 55, 0.3) 20%,
+                rgba(212, 175, 55, 0.3) 80%,
+                transparent
+            );
+            z-index: 10;
+        }
+        
+        .card::after {
+            content: '';
+            position: absolute;
             bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(139, 110, 74, 0.02) 2px,
-                    rgba(139, 110, 74, 0.02) 4px
-                ),
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(139, 110, 74, 0.02) 2px,
-                    rgba(139, 110, 74, 0.02) 4px
-                );
-            opacity: 0.6;
-            pointer-events: none;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(139, 110, 74, 0.2) 20%,
+                rgba(139, 110, 74, 0.2) 80%,
+                transparent
+            );
+            z-index: 10;
         }
         
         .panel {
-            padding: 50px;
+            padding: 60px 50px;
             position: relative;
             z-index: 1;
         }
         
         .front {
-            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 50%, #3d3d5c 100%);
+            background: 
+                linear-gradient(135deg, 
+                    #0d0d12 0%,
+                    #1a1a24 30%,
+                    #242433 60%,
+                    #2d2d40 100%
+                );
             color: #d4af37;
             display: flex;
             flex-direction: column;
@@ -76,6 +117,33 @@
             align-items: center;
             text-align: center;
             position: relative;
+            overflow: hidden;
+        }
+        
+        .front::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(
+                    circle at 30% 30%, 
+                    rgba(212, 175, 55, 0.12) 0%, 
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 70% 70%, 
+                    rgba(139, 110, 74, 0.08) 0%, 
+                    transparent 40%
+                );
+            animation: shimmer 20s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(10px, 10px) rotate(5deg); }
         }
         
         .front::after {
@@ -85,106 +153,173 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            background-image: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 80px,
+                    rgba(212, 175, 55, 0.02) 80px,
+                    rgba(212, 175, 55, 0.02) 160px
+                );
             pointer-events: none;
         }
         
         .inside-left {
-            background: #faf8f5;
-            border-right: 1px solid rgba(139, 110, 74, 0.2);
+            background: #fdfbf7;
+            border-right: 1px solid rgba(139, 110, 74, 0.15);
+            position: relative;
+        }
+        
+        .inside-left::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                rgba(212, 175, 55, 0.2) 20%,
+                rgba(212, 175, 55, 0.2) 80%,
+                transparent
+            );
         }
         
         .inside-right {
-            background: #faf8f5;
+            background: #fdfbf7;
         }
         
         h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8em;
+            font-family: 'Cinzel', serif;
+            font-size: 2.5em;
             margin: 0;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            line-height: 1.3;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            line-height: 1.5;
             text-transform: uppercase;
-            background: linear-gradient(135deg, #d4af37 0%, #f4e4b0 50%, #d4af37 100%);
+            background: linear-gradient(
+                135deg, 
+                #b8964f 0%,
+                #d4af37 20%,
+                #f4e4b0 40%,
+                #d4af37 60%,
+                #b8964f 80%,
+                #8b6e26 100%
+            );
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: goldShine 8s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+        
+        @keyframes goldShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
         h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.9em;
-            color: #2c2416;
-            margin: 0 0 30px 0;
+            font-family: 'Cinzel', serif;
+            font-size: 1.7em;
+            color: #1a1410;
+            margin: 0 0 40px 0;
             position: relative;
-            font-weight: 600;
-            letter-spacing: 0.03em;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
         }
         
         h2::after {
             content: '';
             position: absolute;
-            bottom: -12px;
+            bottom: -15px;
             left: 0;
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(to right, #d4af37, transparent);
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, #c9a961, rgba(201, 169, 97, 0));
+            box-shadow: 0 1px 3px rgba(212, 175, 55, 0.3);
+        }
+        
+        h2::before {
+            content: '◆';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d4af37;
+            font-size: 0.5em;
+            opacity: 0.5;
         }
         
         h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4em;
-            color: #4a3f2e;
-            margin: 25px 0 12px 0;
-            font-weight: 600;
-            letter-spacing: 0.02em;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.2em;
+            color: #2d2416;
+            margin: 30px 0 15px 0;
+            font-weight: 700;
+            letter-spacing: 0.03em;
         }
         
         p {
-            font-size: 0.95em;
-            line-height: 1.8;
-            color: #4a3f2e;
-            margin: 12px 0;
-            font-weight: 300;
-            letter-spacing: 0.01em;
+            font-size: 0.88em;
+            line-height: 1.9;
+            color: #3d3426;
+            margin: 14px 0;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+        
+        strong {
+            font-weight: 700;
+            color: #2d2416;
         }
         
         .map-container {
             width: 100%;
             max-width: 280px;
-            margin: 30px 0;
+            margin: 40px 0;
         }
         
         .path {
             position: relative;
-            padding: 25px 0;
+            padding: 30px 0;
         }
         
         .path::before {
             content: '';
             position: absolute;
-            left: 25px;
-            top: 40px;
-            bottom: 40px;
+            left: 30px;
+            top: 50px;
+            bottom: 50px;
             width: 1px;
-            background: linear-gradient(to bottom, #d4af37, rgba(212, 175, 55, 0.3));
+            background: linear-gradient(
+                to bottom, 
+                transparent,
+                rgba(212, 175, 55, 0.3) 10%,
+                rgba(212, 175, 55, 0.6) 50%,
+                rgba(212, 175, 55, 0.3) 90%,
+                transparent
+            );
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
         }
         
         .stop {
             display: flex;
             align-items: center;
-            margin: 20px 0;
-            animation: fadeInUp 0.8s ease forwards;
+            margin: 28px 0;
+            animation: fadeInUp 1s ease forwards;
             opacity: 0;
             position: relative;
             z-index: 1;
         }
         
-        .stop:nth-child(1) { animation-delay: 0.3s; }
-        .stop:nth-child(2) { animation-delay: 0.5s; }
-        .stop:nth-child(3) { animation-delay: 0.7s; }
-        .stop:nth-child(4) { animation-delay: 0.9s; }
+        .stop:nth-child(1) { animation-delay: 0.4s; }
+        .stop:nth-child(2) { animation-delay: 0.7s; }
+        .stop:nth-child(3) { animation-delay: 1s; }
+        .stop:nth-child(4) { animation-delay: 1.3s; }
         
         @keyframes fadeInUp {
             to {
@@ -193,199 +328,350 @@
             }
             from {
                 opacity: 0;
-                transform: translateY(15px);
+                transform: translateY(20px);
             }
         }
         
         .icon {
-            font-size: 1.8em;
-            margin-right: 20px;
-            width: 50px;
-            height: 50px;
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            font-size: 1.5em;
+            margin-right: 25px;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(
+                circle at 30% 30%, 
+                rgba(212, 175, 55, 0.15), 
+                rgba(212, 175, 55, 0.05)
+            );
+            border: 1px solid rgba(212, 175, 55, 0.25);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            position: relative;
+            box-shadow: 
+                0 2px 8px rgba(212, 175, 55, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+        
+        .icon::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.1);
         }
         
         .label {
-            font-size: 0.9em;
+            font-size: 0.82em;
             font-weight: 400;
-            color: #d4af37;
-            letter-spacing: 0.05em;
-            font-family: 'Montserrat', sans-serif;
+            color: #c9a961;
+            letter-spacing: 0.08em;
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
         }
         
         .maker-box {
-            background: linear-gradient(135deg, #f9f6f1 0%, #f5f0e8 100%);
-            padding: 25px;
-            border-radius: 2px;
-            border: 1px solid rgba(139, 110, 74, 0.2);
-            border-left: 3px solid #d4af37;
-            margin: 20px 0;
+            background: linear-gradient(135deg, #fcfaf7 0%, #f8f4ed 100%);
+            padding: 30px;
+            border-radius: 0;
+            border: none;
+            border-left: 2px solid #d4af37;
+            margin: 25px 0;
             position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 
+                0 1px 3px rgba(0,0,0,0.04),
+                0 8px 20px rgba(139, 110, 74, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
         
         .maker-box::before {
             content: '';
             position: absolute;
-            top: -1px;
-            left: -1px;
-            right: -1px;
-            bottom: -1px;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
-            z-index: -1;
-            border-radius: 2px;
+            top: 0;
+            left: -2px;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, #f4e4b0, #d4af37);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+        
+        .maker-box::after {
+            content: '✦';
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: #d4af37;
+            opacity: 0.15;
+            font-size: 4em;
+            pointer-events: none;
         }
         
         .material-box {
-            background: linear-gradient(135deg, #f6f9f7 0%, #eef4f0 100%);
-            padding: 25px;
-            border-radius: 2px;
-            border: 1px solid rgba(139, 110, 74, 0.2);
-            border-left: 3px solid #8b9a8d;
-            margin: 20px 0;
+            background: linear-gradient(135deg, #f9faf8 0%, #f3f6f2 100%);
+            padding: 30px;
+            border-radius: 0;
+            border: none;
+            border-left: 2px solid #8b9a8d;
+            margin: 25px 0;
             position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 
+                0 1px 3px rgba(0,0,0,0.04),
+                0 8px 20px rgba(139, 154, 141, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
         
         .material-box::before {
             content: '';
             position: absolute;
-            top: -1px;
-            left: -1px;
-            right: -1px;
-            bottom: -1px;
-            background: linear-gradient(135deg, rgba(139, 154, 141, 0.1), transparent);
-            z-index: -1;
-            border-radius: 2px;
+            top: 0;
+            left: -2px;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, #a8b5aa, #8b9a8d);
+            box-shadow: 0 0 10px rgba(139, 154, 141, 0.3);
+        }
+        
+        .material-box::after {
+            content: '❖';
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: #8b9a8d;
+            opacity: 0.12;
+            font-size: 4em;
+            pointer-events: none;
         }
         
         .mission-box {
-            background: linear-gradient(135deg, #f9f7f5 0%, #f3ede7 100%);
-            padding: 25px;
-            border-radius: 2px;
-            border: 1px solid rgba(139, 110, 74, 0.2);
-            margin: 20px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: linear-gradient(135deg, #fdfbf9 0%, #f9f5f0 100%);
+            padding: 30px;
+            border-radius: 0;
+            border: 1px solid rgba(139, 110, 74, 0.12);
+            margin: 25px 0;
+            box-shadow: 
+                0 1px 3px rgba(0,0,0,0.04),
+                0 8px 20px rgba(139, 110, 74, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
         
         .mission-list {
             list-style: none;
             padding: 0;
-            margin: 18px 0;
+            margin: 22px 0;
         }
         
         .mission-list li {
-            padding: 10px 0;
-            padding-left: 35px;
+            padding: 12px 0;
+            padding-left: 40px;
             position: relative;
-            font-weight: 300;
-            font-size: 0.95em;
-            color: #4a3f2e;
+            font-weight: 400;
+            font-size: 0.88em;
+            color: #3d3426;
+            line-height: 1.8;
         }
         
         .mission-list li::before {
-            content: '◆';
+            content: '—';
             position: absolute;
             left: 0;
-            color: #d4af37;
-            font-size: 0.8em;
+            color: #c9a961;
+            font-size: 1em;
+            font-weight: 300;
+        }
+        
+        .mission-list li::after {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 1px;
+            background: #d4af37;
         }
         
         .qr-box {
-            background: linear-gradient(135deg, #f7f5f9 0%, #f0ecf4 100%);
-            padding: 30px;
-            border-radius: 2px;
-            border: 1px solid rgba(139, 110, 74, 0.2);
-            margin: 25px 0;
+            background: linear-gradient(135deg, #faf9fb 0%, #f5f3f7 100%);
+            padding: 35px;
+            border-radius: 0;
+            border: 1px solid rgba(139, 110, 74, 0.12);
+            margin: 30px 0;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 1px 3px rgba(0,0,0,0.04),
+                0 8px 20px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .qr-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.03), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .qr-box:hover::before {
+            opacity: 1;
         }
         
         .qr-box:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+            box-shadow: 
+                0 1px 3px rgba(0,0,0,0.04),
+                0 20px 40px rgba(139, 110, 74, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
         }
         
         .qr-placeholder {
-            width: 130px;
-            height: 130px;
-            margin: 20px auto;
+            width: 140px;
+            height: 140px;
+            margin: 25px auto;
             background: white;
-            border: 1px solid rgba(139, 110, 74, 0.2);
-            border-radius: 2px;
+            border: 1px solid rgba(139, 110, 74, 0.15);
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3em;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            font-size: 3.5em;
+            box-shadow: 
+                0 2px 8px rgba(0,0,0,0.06),
+                inset 0 1px 2px rgba(139, 110, 74, 0.05);
+            color: #c9a961;
+            position: relative;
+        }
+        
+        .qr-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
         }
         
         .hashtag {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6em;
-            color: #2c2416;
-            background: linear-gradient(135deg, #f5f0e8 0%, #e8dfd0 100%);
-            padding: 12px 30px;
-            border-radius: 2px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.4em;
+            color: #2d2416;
+            background: linear-gradient(135deg, #f8f5f0 0%, #ebe5d8 100%);
+            padding: 15px 35px;
+            border-radius: 0;
             display: inline-block;
-            margin-top: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            border: 1px solid rgba(139, 110, 74, 0.3);
+            margin-top: 30px;
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(139, 110, 74, 0.2);
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
             font-weight: 500;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.12em;
+            position: relative;
+        }
+        
+        .hashtag::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.5), transparent);
         }
         
         .subtitle {
-            font-size: 1em;
-            opacity: 0.85;
-            margin-top: 15px;
-            font-weight: 300;
-            letter-spacing: 0.15em;
+            font-size: 0.75em;
+            opacity: 0.8;
+            margin-top: 20px;
+            font-weight: 400;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            font-size: 0.85em;
-            color: #c9a961;
+            color: #b8964f;
+            font-family: 'Cinzel', serif;
+            position: relative;
+            z-index: 2;
         }
         
         .garment-name {
-            background: rgba(212, 175, 55, 0.2);
+            background: rgba(212, 175, 55, 0.12);
             color: #d4af37;
-            padding: 8px 20px;
-            border-radius: 2px;
+            padding: 12px 25px;
+            border-radius: 0;
             display: inline-block;
-            margin: 8px 5px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            font-family: 'Montserrat', sans-serif;
+            margin: 15px 5px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-top: 1px solid rgba(212, 175, 55, 0.4);
+            font-family: 'Cinzel', serif;
             text-transform: uppercase;
-            font-size: 0.9em;
+            font-size: 0.75em;
+            box-shadow: 
+                0 2px 8px rgba(212, 175, 55, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
         
         .corner-stamp {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 70px;
-            height: 70px;
-            border: 2px solid rgba(212, 175, 55, 0.4);
+            top: 30px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2em;
-            background: rgba(212, 175, 55, 0.1);
+            background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
             backdrop-filter: blur(10px);
+            color: #d4af37;
+            box-shadow: 
+                0 4px 20px rgba(212, 175, 55, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        
+        .corner-stamp::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 50%;
+        }
+        
+        .corner-stamp::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
         }
         
         @media (max-width: 1024px) {
+            body {
+                padding: 20px;
+            }
+            
             .card {
                 grid-template-columns: 1fr;
                 max-width: 500px;
@@ -393,20 +679,46 @@
             }
             
             .panel {
-                padding: 40px 35px;
+                padding: 45px 35px;
             }
             
             .inside-left {
                 border-right: none;
-                border-bottom: 1px solid rgba(139, 110, 74, 0.2);
+                border-bottom: 1px solid rgba(139, 110, 74, 0.15);
+            }
+            
+            .inside-left::before {
+                display: none;
+            }
+            
+            .inside-left::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(
+                    to right,
+                    transparent,
+                    rgba(212, 175, 55, 0.2) 20%,
+                    rgba(212, 175, 55, 0.2) 80%,
+                    transparent
+                );
             }
             
             h1 {
-                font-size: 2.3em;
+                font-size: 2.2em;
             }
             
             h2 {
-                font-size: 1.6em;
+                font-size: 1.5em;
+            }
+            
+            .corner-stamp {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5em;
             }
         }
     </style>
@@ -416,9 +728,9 @@
         <div class="card">
             <!-- FRONT PANEL -->
             <div class="panel front">
-                <div class="corner-stamp">✦</div>
-                <h1>The Journey<br>of Your<br><span class="garment-name">Heirloom Sweater</span></h1>
-                <p class="subtitle">From Origin to Wardrobe</p>
+                <div class="corner-stamp">◆</div>
+                <h1>The Legacy<br>of Your<br><span class="garment-name">Heritage Piece</span></h1>
+                <p class="subtitle">A Chronicle of Craft</p>
                 
                 <div class="map-container">
                     <div class="path">
@@ -441,57 +753,57 @@
                     </div>
                 </div>
                 
-                <p style="font-size: 0.85em; margin-top: 30px; opacity: 0.8; letter-spacing: 0.05em;">Unfold to discover the story within</p>
+                <p style="font-size: 0.78em; margin-top: 35px; opacity: 0.75; letter-spacing: 0.12em; font-family: 'Cinzel', serif;">Unfold to reveal the chronicle</p>
             </div>
             
             <!-- INSIDE LEFT PANEL -->
             <div class="panel inside-left">
-                <h2>The Provenance</h2>
+                <h2>Origins</h2>
                 
                 <div class="maker-box">
-                    <h3>Artisan Craftsmanship</h3>
-                    <p>Hand-finished with meticulous care in <strong>Maria's atelier</strong> nestled in the Portuguese countryside, where generations of expertise meet contemporary techniques. Each garment bears the signature of its maker.</p>
-                    <p style="font-size: 0.9em; color: #6b5d4f; margin-top: 15px; font-style: italic;">"We craft each piece as if it were destined for someone we cherish." — Maria</p>
+                    <h3>Atelier Heritage</h3>
+                    <p>Each piece is meticulously finished by master artisans in <strong>Maria's Portuguese atelier</strong>, where time-honored techniques are preserved through generations. Every garment receives individual attention, bearing the subtle hallmarks of human touch that distinguish true craftsmanship from mere production.</p>
+                    <p style="font-size: 0.86em; color: #6b5d4f; margin-top: 18px; font-style: italic; line-height: 1.9;">"We believe a garment should be worthy of the person who wears it, crafted as though for family." — Maria, Master Artisan</p>
                 </div>
                 
                 <div class="material-box">
-                    <h3>Sustainable Origins</h3>
-                    <p>Woven from <strong>certified organic cotton</strong> cultivated on regenerative farms where agricultural practices enrich the soil with each growing season. Every fiber is grown without synthetic pesticides or harmful chemicals—only sun, rain, and thoughtful stewardship.</p>
-                    <p style="margin-top: 15px;"><strong>Environmental Impact:</strong> This garment conserved 2,000 liters of water compared to conventional production—equivalent to a person's drinking water for three years.</p>
-                    <p style="font-size: 0.9em; color: #6b5d4f; margin-top: 12px;">Fully biodegradable, designed to return to the earth at the end of its natural lifecycle.</p>
+                    <h3>Provenance & Material</h3>
+                    <p>Fashioned from <strong>estate-grown organic cotton</strong> cultivated on regenerative agricultural lands where sustainable practices restore and enrich the earth with each season. These fibers are nurtured without synthetic interventions—only through solar energy, natural rainfall, and generations of land stewardship.</p>
+                    <p style="margin-top: 18px;"><strong>Environmental Stewardship:</strong> The creation of this garment conserved 2,000 liters of water relative to conventional methods—a quantity sufficient to sustain one person for thirty-six months.</p>
+                    <p style="font-size: 0.86em; color: #6b5d4f; margin-top: 15px; line-height: 1.9;">Designed with circularity in mind, this piece will gracefully return to nature at the conclusion of its service, leaving no trace beyond memories.</p>
                 </div>
             </div>
             
             <!-- INSIDE RIGHT PANEL -->
             <div class="panel inside-right">
-                <h2>Care & Longevity</h2>
+                <h2>Stewardship</h2>
                 
                 <div class="mission-box">
-                    <h3>Creating an Heirloom</h3>
-                    <p style="margin-bottom: 18px;">This garment is designed to accompany you for <strong>a decade or more</strong>—with proper care, it will only improve with time:</p>
+                    <h3>Cultivating an Heirloom</h3>
+                    <p style="margin-bottom: 22px;">This piece is conceived to accompany you through <strong>seasons and years</strong>—with attentive care, its character will deepen with time:</p>
                     
                     <ul class="mission-list">
-                        <li>Launder in cool water with gentle, eco-conscious detergent</li>
-                        <li>Tumble dry on low heat, or air dry to preserve fiber integrity</li>
-                        <li>Embrace natural wear as part of the garment's unique patina</li>
-                        <li>Mend thoughtfully when needed—each repair adds character</li>
-                        <li>Consider passing it forward when its chapter with you concludes</li>
+                        <li>Cleanse gently in cool water using pH-neutral, environmentally conscious detergent</li>
+                        <li>Tumble dry at minimal heat, or air dry naturally to preserve fiber structure</li>
+                        <li>Embrace the natural evolution of the fabric as testament to its authenticity</li>
+                        <li>Repair thoughtfully when necessary—visible mending honors the garment's history</li>
+                        <li>Consider entrusting it to the next custodian when your chapter concludes</li>
                     </ul>
                     
-                    <p style="font-size: 0.88em; color: #6b5d4f; margin-top: 18px; font-style: italic;">Quality improves with age. This piece will soften and conform to you, becoming more beloved with every wear.</p>
+                    <p style="font-size: 0.86em; color: #6b5d4f; margin-top: 22px; font-style: italic; line-height: 1.9;">Like fine wine, this garment improves with age. It will soften, adapt to your form, and become increasingly treasured with each wearing.</p>
                 </div>
                 
                 <div class="qr-box">
-                    <h3 style="margin-top: 0; color: #4a3f2e;">Behind the Scenes</h3>
-                    <p style="font-size: 0.92em; margin: 12px 0; color: #6b5d4f;">Scan to watch your garment's journey unfold</p>
-                    <div class="qr-placeholder">◈</div>
-                    <p style="font-size: 0.82em; color: #8b8174; font-style: italic;">Discover the artisans, the process, and the story</p>
+                    <h3 style="margin-top: 0; color: #2d2416;">Atelier Archives</h3>
+                    <p style="font-size: 0.88em; margin: 15px 0; color: #6b5d4f; line-height: 1.8;">Access an intimate view of your garment's creation</p>
+                    <div class="qr-placeholder">✧</div>
+                    <p style="font-size: 0.8em; color: #8b8174; font-style: italic; line-height: 1.8;">Witness the hands, the process, and the dedication</p>
                 </div>
                 
-                <div style="text-align: center; margin-top: 30px;">
-                    <p style="font-size: 1em; font-weight: 400; color: #4a3f2e; letter-spacing: 0.02em;">Your story continues...</p>
-                    <div class="hashtag">#WornWithIntent</div>
-                    <p style="font-size: 0.88em; color: #6b5d4f; margin-top: 18px; font-weight: 300;">Share the journey of your cherished pieces</p>
+                <div style="text-align: center; margin-top: 35px;">
+                    <p style="font-size: 0.95em; font-weight: 400; color: #2d2416; letter-spacing: 0.08em; margin-bottom: 8px;">Your narrative continues</p>
+                    <div class="hashtag">#TimelesslyWorn</div>
+                    <p style="font-size: 0.82em; color: #6b5d4f; margin-top: 20px; font-weight: 400; line-height: 1.8; letter-spacing: 0.03em;">Share the enduring story of pieces made to last</p>
                 </div>
             </div>
         </div>
